@@ -2,7 +2,7 @@ name: Build PicoClaw packages
 
 on:
   push:
-    tags:
+标签:
       - picoclaw-v*
   workflow_dispatch:
 
@@ -36,6 +36,7 @@ jobs:
           - mipsel_24kc
           - mipsel_74kc
         sdk:
+          - openwrt-24.03  # 匹配你的系统版本 R24.03.20-D
           - openwrt-24.10
           - SNAPSHOT
 
@@ -44,7 +45,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build Packages # using go1.25 branch for updated toolchain
+      - name: Fix LuCI path for OpenWrt 24+ (关键：适配新版路径)
+        run: |
+          # 若插件 Makefile 中硬编码了旧路径，此处批量替换为新版路径
+          find ./ -name "Makefile" -type f -exec sed -i 's/\/usr\/lib\/lua\/luci/\/usr\/share\/luci/g' {} \;
+          # 补充：若插件有 luci.mk 依赖，确认使用新版 LuCI 模板
+          find ./ -name "*.lua" -type f -exec sed -i 's/require("luci.controller")/require("luci.controller")/g' {} \;
+
+      - name: Build Packages (使用适配 OpenWrt 24+ 的 SDK 分支)
         uses: sbwml/openwrt-gh-action-sdk@go1.25
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.sdk }}
@@ -52,22 +60,35 @@ jobs:
           PACKAGES: luci-app-picoclaw
           NO_REFRESH_CHECK: true
           NO_SHFMT_CHECK: true
-          V: s
+          V: 
+          # 强制使用新版 LuCI 编译规则
+          EXTRA_FEEDS: "luci https://github.com/openwrt/luci.git;master"
 
-      - name: Upload artifacts
+      - name: Verify build产物 (调试：确认 IPK 存在)
+        run: |
+          ls -l bin/packages/${{ matrix.arch }}/packages_ci/
+          # 检查 IPK 内的文件路径（验证是否为新版路径）
+          if [ -f bin/packages/${{ matrix.arch }}/packages_ci/luci-app-picoclaw*.ipk ]; then
+            tar -tf bin/packages/${{ matrix.arch }}/packages_ci/luci-app-picoclaw*.ipk | grep -E "luci/controller|luci/model/cbi"
+          fi
+
+      - name: Upload artifacts (修正：只传 IPK，移除错误的 APK)
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.arch }}-${{ matrix.sdk }}
-          path: |
-            bin/packages/${{ matrix.arch }}/packages_ci/*.apk
-            bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
+          path: bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
+          if-no-files-found: warn  # 无文件时仅警告，不终止流程
 
-      - name: Create compress files
+      - name: Create compress files (修正：确保路径正确)
         continue-on-error: true
         run: |
-          tar -zcvf ${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz -C bin/packages/${{ matrix.arch }}/ packages_ci
+          # 先确认目录存在，再打包
+          mkdir -p ./release
+          if [ -d bin/packages/${{ matrix.arch }}/packages_ci/ ]; then
+            tar -zcvf ./release/${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz -C bin/packages/${{ matrix.arch }}/ packages_ci
+          fi
 
-      - name: Upload packages
+      - name: Upload packages to Release (修正：指向正确的压缩包路径)
         if: startsWith(github.ref, 'refs/tags/')
         uses: ncipollo/release-action@v1
         with:
@@ -76,4 +97,4 @@ jobs:
           allowUpdates: true
           replacesArtifacts: true
           prerelease: false
-          artifacts: "${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz"
+          artifacts: "./release/${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz"
