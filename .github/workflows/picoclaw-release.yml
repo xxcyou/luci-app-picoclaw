@@ -37,7 +37,6 @@ jobs:
           - mipsel_74kc
         sdk:
           - openwrt-24.10
-          - openwrt-24.03
           - SNAPSHOT
 
     steps:
