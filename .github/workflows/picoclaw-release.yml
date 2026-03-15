@@ -14,39 +14,24 @@ jobs:
       fail-fast: false
       matrix:
         arch:
-          # === ARM64 (aarch64) ===
+          - aarch64_generic
+          - x86_64
           - aarch64_cortex-a53
           - aarch64_cortex-a72
-          - aarch64_generic
-          # === ARM 32-bit ===
-          - arm_arm1176jzf-s_vfp
-          - arm_arm926ej-s
-          - arm_cortex-a15_neon-vfpv4
-          - arm_cortex-a5_vfpv4
-          - arm_cortex-a7
           - arm_cortex-a7_neon-vfpv4
           - arm_cortex-a9_vfpv3-d16
-          - arm_xscale
-          # === x86 ===
-          - i386_pentium-mmx
-          - i386_pentium4
-          - x86_64
-          # === MIPS ===
           - mips_24kc
           - mipsel_24kc
-          - mipsel_74kc
         sdk:
-          - openwrt-24.10
           - openwrt-23.05
-          - SNAPSHOT
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build Packages # using go1.25 branch for updated toolchain
-        uses: sbwml/openwrt-gh-action-sdk@go1.25
+      - name: Build Packages
+        uses: sbwml/openwrt-gh-action-sdk@main
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.sdk }}
           FEEDNAME: packages_ci
@@ -60,7 +45,6 @@ jobs:
         with:
           name: ${{ matrix.arch }}-${{ matrix.sdk }}
           path: |
-            bin/packages/${{ matrix.arch }}/packages_ci/*.apk
             bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
 
       - name: Create compress files
@@ -68,7 +52,7 @@ jobs:
         run: |
           tar -zcvf ${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz -C bin/packages/${{ matrix.arch }}/ packages_ci
 
-      - name: Upload packages
+      - name: Upload packages to release
         if: startsWith(github.ref, 'refs/tags/')
         uses: ncipollo/release-action@v1
         with:
