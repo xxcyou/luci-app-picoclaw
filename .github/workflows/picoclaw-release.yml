@@ -2,7 +2,7 @@ name: Build PicoClaw packages
 
 on:
   push:
-标签:
+    tags:
       - picoclaw-v*
   workflow_dispatch:
 
@@ -53,7 +53,7 @@ jobs:
           PACKAGES: luci-app-picoclaw
           NO_REFRESH_CHECK: true
           NO_SHFMT_CHECK: true
-          V: 
+          V: s
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
