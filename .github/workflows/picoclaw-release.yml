@@ -23,7 +23,7 @@ jobs:
           - mips_24kc
           - mipsel_24kc
         sdk:
-          - openwrt-23.05
+          - openwrt-23.05-SNAPSHOT
 
     steps:
       - uses: actions/checkout@v4
