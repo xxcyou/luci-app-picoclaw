@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=picoclaw
-PKG_VERSION:=0.1.2
+PKG_VERSION:=0.2.2
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
