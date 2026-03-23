@@ -1,4 +1,4 @@
-name: Build PicoClaw packages
+name: Build PicoClaw packages for CR660x
 
 on:
   push:
@@ -16,31 +16,12 @@ jobs:
         arch:
           # === CR660x Specific ===
           - ramips_mt7621  # Xiaomi Mi Router CR6608 (MT7621)
-          # === ARM64 (aarch64) ===
-          - aarch64_cortex-a53
-          - aarch64_cortex-a72
-          - aarch64_generic
-          # === ARM 32-bit ===
-          - arm_arm1176jzf-s_vfp
-          - arm_arm926ej-s
-          - arm_cortex-a15_neon-vfpv4
-          - arm_cortex-a5_vfpv4
-          - arm_cortex-a7
-          - arm_cortex-a7_neon-vfpv4
-          - arm_cortex-a9_vfpv3-d16
-          - arm_xscale
-          # === x86 ===
-          - i386_pentium-mmx
-          - i386_pentium4
-          - x86_64
-          # === MIPS ===
-          - mips_24kc
-          - mipsel_24kc
-          - mipsel_74kc
+          # === Other architectures for compatibility ===
+          - mipsel_24kc    # Generic MIPS little-endian
+          - x86_64         # For testing
         sdk:
-          - openwrt-25.12
-          - openwrt-24.10
-          - SNAPSHOT
+          - openwrt-24.10  # Stable version for CR660x
+          - openwrt-25.12  # Development version
 
     steps:
       - uses: actions/checkout@v4
