@@ -1,0 +1,74 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "PicoClaw"
+msgstr "PicoClaw"
+
+msgid "PicoClaw Settings"
+msgstr "PicoClaw 设置"
+
+msgid "Basic Settings"
+msgstr "基础设置"
+
+msgid "Advanced Configuration"
+msgstr "高级配置"
+
+msgid "Log Viewer"
+msgstr "日志查看器"
+
+msgid "Enable PicoClaw"
+msgstr "启用 PicoClaw"
+
+msgid "Enable Logging"
+msgstr "启用日志"
+
+msgid "Startup Delay (seconds)"
+msgstr "启动延迟 (秒)"
+
+msgid "Gateway Settings"
+msgstr "网关设置"
+
+msgid "Listen Address"
+msgstr "监听地址"
+
+msgid "Listen Port"
+msgstr "监听端口"
+
+msgid "Agent Settings"
+msgstr "工作区设置"
+
+msgid "Workspace Directory"
+msgstr "工作目录"
+
+msgid "Restrict to Workspace"
+msgstr "限制工作区访问"
+
+msgid "Heartbeat Settings"
+msgstr "心跳设置"
+
+msgid "Enable Heartbeat"
+msgstr "启用心跳"
+
+msgid "Heartbeat Interval (minutes)"
+msgstr "心跳间隔 (分钟)"
+
+msgid "Service Control"
+msgstr "服务控制"
+
+msgid "Restart PicoClaw"
+msgstr "重启 PicoClaw"
+
+msgid "Check Status"
+msgstr "查看状态"
+
+msgid "JSON Configuration Editor"
+msgstr "JSON 配置编辑器"
+
+msgid "Format JSON"
+msgstr "格式化 JSON"
+
+msgid "Clear Log"
+msgstr "清空日志"
+
+msgid "PicoClaw Log"
+msgstr "PicoClaw 日志"

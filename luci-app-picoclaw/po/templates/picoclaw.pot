@@ -1,0 +1,74 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "PicoClaw"
+msgstr ""
+
+msgid "PicoClaw Settings"
+msgstr ""
+
+msgid "Basic Settings"
+msgstr ""
+
+msgid "Advanced Configuration"
+msgstr ""
+
+msgid "Log Viewer"
+msgstr ""
+
+msgid "Enable PicoClaw"
+msgstr ""
+
+msgid "Enable Logging"
+msgstr ""
+
+msgid "Startup Delay (seconds)"
+msgstr ""
+
+msgid "Gateway Settings"
+msgstr ""
+
+msgid "Listen Address"
+msgstr ""
+
+msgid "Listen Port"
+msgstr ""
+
+msgid "Agent Settings"
+msgstr ""
+
+msgid "Workspace Directory"
+msgstr ""
+
+msgid "Restrict to Workspace"
+msgstr ""
+
+msgid "Heartbeat Settings"
+msgstr ""
+
+msgid "Enable Heartbeat"
+msgstr ""
+
+msgid "Heartbeat Interval (minutes)"
+msgstr ""
+
+msgid "Service Control"
+msgstr ""
+
+msgid "Restart PicoClaw"
+msgstr ""
+
+msgid "Check Status"
+msgstr ""
+
+msgid "JSON Configuration Editor"
+msgstr ""
+
+msgid "Format JSON"
+msgstr ""
+
+msgid "Clear Log"
+msgstr ""
+
+msgid "PicoClaw Log"
+msgstr ""
