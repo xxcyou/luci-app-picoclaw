@@ -1,0 +1,53 @@
+<%#
+ Copyright 2021-2026 LIKE2000-ART
+ Licensed to the public under the Apache License 2.0.
+-%>
+
+<%
+local fs = require "nixio.fs"
+local uci = require "luci.model.uci".cursor()
+local listen_port = uci:get("picoclaw", "gateway", "port") or "18790"
+
+local function check_process()
+    local pidof_res = fs.exec("/bin/pidof", {"picoclaw"})
+    if pidof_res and #pidof_res > 0 then
+        return true, pidof_res:match("(%d+)")
+    end
+    
+    local ps_res = fs.exec("/bin/ash", {"-c", "ps | grep -q '[p]icoclaw'"})
+    if ps_res and ps_res:match("running") then
+        return true, nil
+    end
+    
+    return false, nil
+end
+
+local function get_version()
+    -- This would need to be implemented via ubus call in real scenario
+    -- For now, we'll just return empty version
+    return ""
+end
+
+local is_running, pid = check_process()
+local version = get_version()
+
+local status_text = is_running and translate("RUNNING") or translate("NOT RUNNING")
+local color = is_running and "green" or "red"
+local icon = is_running and "✓" or "✗"
+local version_text = version ~= "" and "v" .. version or ""
+%>
+
+<div class="cbi-section">
+    <p id="control_status" style="padding: 15px; border-radius: 8px; background: #f8f9fa; border: 1px solid #e9ecef; box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-size: 14px;">
+        <span style="color:<%=color%>"><%=icon%> <strong><%=translate("PicoClaw")%> <%=version_text%> - <%=status_text%></strong></span>
+        <% if is_running and listen_port then %>
+            &nbsp;<a class="btn cbi-button" href="http://<%=luci.http.getenv("HTTP_HOST"):match("([^:]+)") or luci.sys.exec("ip route get 1.1.1.1 2>/dev/null | head -1 | awk '{print $7}'"):gsub("\n", "")%>:<%=listen_port%>/health" target="_blank"><%=translate("Open Web Interface")%></a>
+        <% end %>
+    </p>
+    <div style="text-align: right; font-style: italic; margin-top: 10px; color: #6c757d; font-size: 12px;">
+        <%=translate("Powered by open source: ")%>
+        <a href="https://github.com/sipeed/picoclaw" target="_blank" style="text-decoration: none; color: #007bff;">
+            PicoClaw UI by LIKE2000-ART
+        </a>
+    </div>
+</div>

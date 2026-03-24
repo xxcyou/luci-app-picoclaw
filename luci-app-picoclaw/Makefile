@@ -8,16 +8,18 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-picoclaw
 PKG_VERSION:=1.0.0
-PKG_RELEASE:=20260226
+PKG_RELEASE:=20260324
 
 PKG_MAINTAINER:=LIKE2000-ART
 PKG_CONFIG_DEPENDS:=
 
-LUCI_TITLE:=LuCI Support for PicoClaw AI Assistant
+LUCI_TITLE:=LuCI Support for PicoClaw AI Assistant (Lua Compatible)
 LUCI_DEPENDS:=+picoclaw
 LUCI_PKGARCH:=all
 
-
+define Package/luci-app-picoclaw/conffiles
+/etc/config/picoclaw
+endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
@@ -34,5 +36,15 @@ define Package/luci-app-picoclaw/postrm
 exit 0
 endef
 
-# call BuildPackage - OpenWrt buildroot signature
+# Install Lua files instead of JSON/JS files
+define LuciAppPackage/luci-app-picoclaw/install
+	$(call LuciAppPackage/luci-base/install)
+	$(INSTALL_DIR) $$(1)/usr/lib/lua/luci/controller
+	$(INSTALL_DATA) ./usr/lib/lua/luci/controller/picoclaw.lua $$(1)/usr/lib/lua/luci/controller/
+	$(INSTALL_DIR) $$(1)/usr/lib/lua/luci/model/cbi/picoclaw
+	$(INSTALL_DATA) ./usr/lib/lua/luci/model/cbi/picoclaw/*.lua $$(1)/usr/lib/lua/luci/model/cbi/picoclaw/
+	$(INSTALL_DIR) $$(1)/usr/lib/lua/luci/view/picoclaw
+	$(INSTALL_DATA) ./usr/lib/lua/luci/view/picoclaw/*.htm $$(1)/usr/lib/lua/luci/view/picoclaw/
+endef
 
+# call BuildPackage - OpenWrt buildroot signature
