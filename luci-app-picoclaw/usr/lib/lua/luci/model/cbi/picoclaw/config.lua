@@ -9,11 +9,10 @@ local fs = require "nixio.fs"
 local uci = luci.model.uci.cursor()
 local m, s, o
 
--- Load UCI configuration
 m = Map("picoclaw", "PicoClaw AI助手",
     "PicoClaw是一个超轻量级AI助手，体积小、速度快、可部署在任何地方。")
 
--- Status section
+-- Status section with polling functionality
 s = m:section(SimpleSection)
 s.template = "picoclaw/status"
 

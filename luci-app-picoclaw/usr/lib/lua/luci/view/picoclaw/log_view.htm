@@ -5,24 +5,46 @@
 
 <%
 local fs = require "nixio.fs"
-local log_content = fs.readfile("/var/log/picoclaw.log") or "日志文件不存在。"
+local log_path = "/var/log/picoclaw.log"
+local log_content = ""
+
+-- Read log file with error handling
+local log_file = io.open(log_path, "r")
+if log_file then
+    log_content = log_file:read("*all") or ""
+    log_file:close()
+    
+    if log_content == "" then
+        log_content = "日志为空。"
+    end
+else
+    log_content = "日志文件不存在。"
+end
+
+-- Handle clear log request
+if luci.http.formvalue("clear_log") then
+    local result = fs.writefile(log_path, "")
+    if result then
+        log_content = "日志已清除。"
+    else
+        log_content = "清除日志失败。"
+    end
+    luci.http.redirect(luci.http.getenv("REQUEST_URI"))
+end
 %>
 
 <div class="cbi-section">
-    <h3>日志</h3>
-    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef; max-height: 400px; overflow-y: auto; font-family: monospace; white-space: pre-wrap;">
-        <%=log_content%>
-    </div>
-    <div style="margin-top: 10px;">
+    <div style="margin-bottom: 10px;">
         <form method="post" action="<%=REQUEST_URI%>" enctype="multipart/form-data">
             <input type="submit" name="clear_log" value="清除日志" class="cbi-button cbi-button-remove" />
         </form>
     </div>
+    <div class="log-container" id="log_container" style="display: flex; flex-direction: column; max-height: 1200px; overflow-y: auto; border-radius: 3px; margin-top: 10px; padding: 5px; background: #f8f9fa; border: 1px solid #e9ecef;">
+        <pre style="padding: 10px; font-size: small; line-height: 1.3; white-space: pre-wrap; word-wrap: break-word; overflow-y: auto; font-family: monospace;"><%=pcdata(log_content)%></pre>
+    </div>
+    <small style="margin-left: 1rem; font-size: small;">每5秒刷新一次。</small>
+    <div style="text-align: right; font-style: italic; margin-top: 10px;">
+        © github 
+        <a href="https://github.com/LIKE2000-ART" target="_blank" style="text-decoration: none;">by LIKE2000-ART</a>
+    </div>
 </div>
-
-<%
-if luci.http.formvalue("clear_log") then
-    fs.writefile("/var/log/picoclaw.log", "")
-    luci.http.redirect(luci.http.getenv("REQUEST_URI"))
-end
-%>

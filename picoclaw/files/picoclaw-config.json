@@ -2,76 +2,369 @@
   "agents": {
     "defaults": {
       "workspace": "/etc/picoclaw/workspace",
-      "restrict_to_workspace": true,
-      "model_name": "deepseek",
+      "restrict_to_workspace": false,
+      "allow_read_outside_workspace": false,
+      "provider": "",
+      "model_name": "qwen3-max",
       "max_tokens": 8192,
       "temperature": 0.7,
-      "max_tool_iterations": 20
+      "max_tool_iterations": 9999,
+      "summarize_message_threshold": 0,
+      "summarize_token_percent": 0,
+      "steering_mode": "one-at-a-time",
+      "subturn": {
+        "max_depth": 0,
+        "max_concurrent": 0,
+        "default_timeout_minutes": 0,
+        "default_token_budget": 0,
+        "concurrency_timeout_sec": 0
+      },
+      "tool_feedback": {
+        "enabled": true,
+        "max_args_length": 300
+      }
     }
   },
   "model_list": [
     {
-      "model_name": "deepseek",
-      "model": "deepseek/deepseek-chat",
-      "api_key": "",
-      "api_base": ""
+      "model_name": "qwen3-max",
+      "model": "openai/qwen3-max",
+      "api_base": "http://192.168.77.23:8317/v1"
     }
   ],
   "channels": {
+    "whatsapp": {
+      "enabled": false,
+      "bridge_url": "",
+      "use_native": false,
+      "session_store_path": "",
+      "allow_from": null,
+      "reasoning_channel_id": ""
+    },
     "telegram": {
       "enabled": false,
-      "token": "",
+      "base_url": "",
       "proxy": "",
-      "allow_from": []
+      "allow_from": [],
+      "group_trigger": {},
+      "typing": {},
+      "placeholder": {},
+      "streaming": {},
+      "reasoning_channel_id": "",
+      "use_markdown_v2": false
+    },
+    "feishu": {
+      "enabled": false,
+      "app_id": "cli_a94894647abc9cc1",
+      "allow_from": [],
+      "group_trigger": {},
+      "placeholder": {},
+      "reasoning_channel_id": "",
+      "random_reaction_emoji": null,
+      "is_lark": false
     },
     "discord": {
       "enabled": false,
-      "token": "",
+      "proxy": "",
       "allow_from": [],
-      "mention_only": false
+      "mention_only": false,
+      "group_trigger": {},
+      "typing": {},
+      "placeholder": {},
+      "reasoning_channel_id": ""
     },
     "maixcam": {
-      "enabled": false,
+      "enabled": true,
       "host": "0.0.0.0",
-      "port": 18790,
-      "allow_from": []
+      "port": 18791,
+      "allow_from": ["192.168.77.0/24"]
+    },
+    "qq": {
+      "enabled": false,
+      "app_id": "",
+      "allow_from": null,
+      "group_trigger": {},
+      "max_message_length": 0,
+      "max_base64_file_size_mib": 0,
+      "send_markdown": false,
+      "reasoning_channel_id": ""
     },
     "dingtalk": {
       "enabled": false,
       "client_id": "",
-      "client_secret": "",
-      "allow_from": []
+      "allow_from": [],
+      "group_trigger": {},
+      "reasoning_channel_id": ""
+    },
+    "slack": {
+      "enabled": false,
+      "allow_from": null,
+      "group_trigger": {},
+      "typing": {},
+      "placeholder": {},
+      "reasoning_channel_id": ""
+    },
+    "matrix": {
+      "enabled": false,
+      "homeserver": "",
+      "user_id": "",
+      "join_on_invite": false,
+      "allow_from": null,
+      "group_trigger": {},
+      "placeholder": {},
+      "reasoning_channel_id": ""
+    },
+    "line": {
+      "enabled": false,
+      "webhook_host": "",
+      "webhook_port": 0,
+      "webhook_path": "",
+      "allow_from": null,
+      "group_trigger": {},
+      "typing": {},
+      "placeholder": {},
+      "reasoning_channel_id": ""
+    },
+    "onebot": {
+      "enabled": false,
+      "ws_url": "",
+      "reconnect_interval": 0,
+      "group_trigger_prefix": null,
+      "allow_from": null,
+      "group_trigger": {},
+      "typing": {},
+      "placeholder": {},
+      "reasoning_channel_id": ""
     },
     "wecom": {
       "enabled": false,
-      "token": "",
-      "encoding_aes_key": "",
       "webhook_url": "",
       "webhook_host": "0.0.0.0",
       "webhook_port": 18793,
       "webhook_path": "/webhook/wecom",
       "allow_from": [],
-      "reply_timeout": 5
+      "reply_timeout": 5,
+      "group_trigger": {},
+      "reasoning_channel_id": ""
+    },
+    "wecom_app": {
+      "enabled": false,
+      "corp_id": "",
+      "agent_id": 0,
+      "webhook_host": "",
+      "webhook_port": 0,
+      "webhook_path": "",
+      "allow_from": null,
+      "reply_timeout": 0,
+      "group_trigger": {},
+      "reasoning_channel_id": ""
+    },
+    "wecom_aibot": {
+      "enabled": false,
+      "allow_from": null,
+      "reply_timeout": 0,
+      "max_steps": 0,
+      "welcome_message": "",
+      "reasoning_channel_id": ""
+    },
+    "weixin": {
+      "enabled": false,
+      "base_url": "",
+      "cdn_base_url": "",
+      "proxy": "",
+      "allow_from": null,
+      "reasoning_channel_id": ""
+    },
+    "pico": {
+      "enabled": false,
+      "allow_from": null,
+      "placeholder": {}
+    },
+    "pico_client": {
+      "enabled": false,
+      "url": "",
+      "token": "",
+      "allow_from": null
+    },
+    "irc": {
+      "enabled": false,
+      "server": "",
+      "tls": false,
+      "nick": "",
+      "sasl_user": "",
+      "channels": null,
+      "allow_from": null,
+      "group_trigger": {},
+      "typing": {},
+      "reasoning_channel_id": ""
+    }
+  },
+  "gateway": {
+    "host": "0.0.0.0",
+    "port": 18790,
+    "hot_reload": false
+  },
+  "hooks": {
+    "enabled": true,
+    "defaults": {
+      "observer_timeout_ms": 500,
+      "interceptor_timeout_ms": 5000,
+      "approval_timeout_ms": 60000
     }
   },
   "tools": {
+    "allow_read_paths": null,
+    "allow_write_paths": null,
+    "filter_sensitive_data": true,
+    "filter_min_length": 8,
     "web": {
+      "enabled": false,
+      "brave": {
+        "enabled": false,
+        "max_results": 0
+      },
+      "tavily": {
+        "enabled": false,
+        "base_url": "",
+        "max_results": 0
+      },
       "duckduckgo": {
         "enabled": true,
         "max_results": 5
       },
-      "proxy": ""
+      "perplexity": {
+        "enabled": false,
+        "max_results": 0
+      },
+      "searxng": {
+        "enabled": false,
+        "base_url": "",
+        "max_results": 0
+      },
+      "glm_search": {
+        "enabled": false,
+        "base_url": "",
+        "search_engine": "",
+        "max_results": 0
+      },
+      "baidu_search": {
+        "enabled": false,
+        "base_url": "",
+        "max_results": 0
+      },
+      "prefer_native": false
     },
     "cron": {
-      "exec_timeout_minutes": 5
+      "enabled": false,
+      "exec_timeout_minutes": 5,
+      "allow_command": false
+    },
+    "exec": {
+      "enabled": true,
+      "enable_deny_patterns": false,
+      "allow_remote": false,
+      "custom_deny_patterns": null,
+      "custom_allow_patterns": null,
+      "timeout_seconds": 0
+    },
+    "skills": {
+      "enabled": false,
+      "registries": {
+        "clawhub": {
+          "enabled": false,
+          "base_url": "",
+          "search_path": "",
+          "skills_path": "",
+          "download_path": "",
+          "timeout": 0,
+          "max_zip_size": 0,
+          "max_response_size": 0
+        }
+      },
+      "github": {},
+      "max_concurrent_searches": 0,
+      "search_cache": {
+        "max_size": 0,
+        "ttl_seconds": 0
+      }
+    },
+    "media_cleanup": {
+      "enabled": false,
+      "max_age_minutes": 0,
+      "interval_minutes": 0
+    },
+    "mcp": {
+      "enabled": false,
+      "discovery": {
+        "enabled": false,
+        "ttl": 0,
+        "max_search_results": 0,
+        "use_bm25": false,
+        "use_regex": false
+      }
+    },
+    "append_file": {
+      "enabled": false
+    },
+    "edit_file": {
+      "enabled": false
+    },
+    "find_skills": {
+      "enabled": false
+    },
+    "i2c": {
+      "enabled": false
+    },
+    "install_skill": {
+      "enabled": false
+    },
+    "list_dir": {
+      "enabled": false
+    },
+    "message": {
+      "enabled": false
+    },
+    "read_file": {
+      "enabled": false,
+      "max_read_file_size": 0
+    },
+    "send_file": {
+      "enabled": false
+    },
+    "spawn": {
+      "enabled": false
+    },
+    "spawn_status": {
+      "enabled": false
+    },
+    "spi": {
+      "enabled": false
+    },
+    "subagent": {
+      "enabled": false
+    },
+    "web_fetch": {
+      "enabled": false
+    },
+    "write_file": {
+      "enabled": true
     }
   },
   "heartbeat": {
     "enabled": true,
     "interval": 30
   },
-  "gateway": {
-    "host": "0.0.0.0",
-    "port": 18790
+  "devices": {
+    "enabled": false,
+    "monitor_usb": false
+  },
+  "voice": {
+    "echo_transcription": false
+  },
+  "build_info": {
+    "version": "dev",
+    "git_commit": "",
+    "build_time": "",
+    "go_version": ""
   }
 }
