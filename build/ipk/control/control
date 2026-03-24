@@ -1,9 +1,0 @@
-Package: luci-app-picoclaw
-Version: 1.0.0-20260324
-Architecture: all
-Maintainer: LIKE2000-ART
-Description: LuCI Support for PicoClaw AI Assistant (Lua Compatible)
-Source: luci-app-picoclaw
-Section: luci
-Priority: optional
-Depends: picoclaw
