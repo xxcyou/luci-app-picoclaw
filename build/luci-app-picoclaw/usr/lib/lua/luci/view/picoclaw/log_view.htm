@@ -5,17 +5,17 @@
 
 <%
 local fs = require "nixio.fs"
-local log_content = fs.readfile("/var/log/picoclaw.log") or "日志文件不存在。"
+local log_content = fs.readfile("/var/log/picoclaw.log") or translate("No log file found.")
 %>
 
 <div class="cbi-section">
-    <h3>日志</h3>
+    <h3><%=translate("PicoClaw Log")%></h3>
     <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef; max-height: 400px; overflow-y: auto; font-family: monospace; white-space: pre-wrap;">
         <%=log_content%>
     </div>
     <div style="margin-top: 10px;">
         <form method="post" action="<%=REQUEST_URI%>" enctype="multipart/form-data">
-            <input type="submit" name="clear_log" value="清除日志" class="cbi-button cbi-button-remove" />
+            <input type="submit" name="clear_log" value="<%=translate("Clear Log")%>" class="cbi-button cbi-button-remove" />
         </form>
     </div>
 </div>

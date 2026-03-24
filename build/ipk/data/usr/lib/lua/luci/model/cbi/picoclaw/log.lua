@@ -7,8 +7,8 @@ require("luci.util")
 local fs = require "nixio.fs"
 local m, s, o
 
-m = Map("picoclaw", "日志",
-    "查看和管理 PicoClaw 日志。")
+m = Map("picoclaw", translate("PicoClaw Log"),
+    translate("View and manage PicoClaw logs."))
 
 -- Log section
 s = m:section(SimpleSection)

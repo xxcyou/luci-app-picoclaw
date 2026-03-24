@@ -10,8 +10,8 @@ local uci = luci.model.uci.cursor()
 local m, s, o
 
 -- Load UCI configuration
-m = Map("picoclaw", translate("PicoClaw"),
-    translate("PicoClaw is an ultra-lightweight AI Assistant. Tiny, Fast, and Deployable anywhere."))
+m = Map("picoclaw", "PicoClaw AI助手",
+    "PicoClaw是一个超轻量级AI助手，体积小、速度快、可部署在任何地方。")
 
 -- Status section
 s = m:section(SimpleSection)
@@ -19,57 +19,57 @@ s.template = "picoclaw/status"
 
 -- Basic settings
 s = m:section(NamedSection, "config", "basic")
-s.title = translate("⚙️ Basic Settings")
+s.title = "⚙️ 基础设置"
 
-o = s:option(Flag, "enabled", translate("Enable PicoClaw"))
-o.description = translate("Enable the PicoClaw background daemon.")
+o = s:option(Flag, "enabled", "启用 PicoClaw")
+o.description = "启用 PicoClaw 后台守护程序。"
 o.default = "1"
 o.rmempty = false
 
-o = s:option(Value, "delay", translate("Delayed Start (seconds)"))
-o.description = translate("Delay the startup of the service to wait for network readiness.")
+o = s:option(Value, "delay", "开机延时启动（秒）")
+o.description = "延迟服务的启动以等待网络就绪。"
 o.default = "0"
 o.datatype = "uinteger"
 
 -- Gateway settings
 s = m:section(NamedSection, "gateway", "gateway")
-s.title = translate("🌐 Gateway Settings")
+s.title = "🌐 网关设置"
 
-o = s:option(Value, "host", translate("Listen Address"))
-o.description = translate("The IP address the API server will bind to (0.0.0.0 for all interfaces).")
+o = s:option(Value, "host", "监听地址")
+o.description = "API 服务器绑定的 IP 地址（0.0.0.0 表示所有接口）。"
 o.default = "0.0.0.0"
 o.rmempty = false
 
-o = s:option(Value, "port", translate("Listen Port"))
-o.description = translate("The port number for the PicoClaw local API dashboard.")
+o = s:option(Value, "port", "监听端口")
+o.description = "PicoClaw 本地 API 控制面板的端口号。"
 o.default = "18790"
 o.datatype = "port"
 o.rmempty = false
 
 -- Agent settings
 s = m:section(NamedSection, "agent", "agent")
-s.title = translate("🤖 Agent Settings")
+s.title = "🤖 Agent 设置"
 
-o = s:option(Value, "workspace", translate("Workspace Path"))
-o.description = translate("Absolute path to store AI memories, chats, tasks, and configurations. E.g., /opt/picoclaw/workspace")
+o = s:option(Value, "workspace", "工作目录路径")
+o.description = "存储 AI 记忆、对话、任务和配置的绝对路径。例如：/opt/picoclaw/workspace"
 o.default = "/opt/picoclaw/workspace"
 o.rmempty = false
 
-o = s:option(Flag, "restrict_to_workspace", translate("Restrict to workspace (Sandbox)"))
-o.description = translate("Highly recommended. Prevents the AI from reading/modifying files outside the workspace directory.")
+o = s:option(Flag, "restrict_to_workspace", "限制在工作目录 (沙盒模式)")
+o.description = "强烈建议开启。防止 AI 读取或修改工作目录之外的系统文件。"
 o.default = "0"
 o.rmempty = false
 
 -- Heartbeat settings
 s = m:section(NamedSection, "heartbeat", "heartbeat")
-s.title = translate("❤️ Heartbeat Settings")
+s.title = "❤️ 心跳设置"
 
-o = s:option(Flag, "enabled", translate("Enable Heartbeat"))
-o.description = translate("Send periodic keep-alive signals for active channels (e.g., Telegram, Discord).")
+o = s:option(Flag, "enabled", "启用心跳")
+o.description = "为活跃的通讯渠道（如 Telegram, Discord）发送定期的保活信号。"
 o.default = "1"
 o.rmempty = false
 
-o = s:option(Value, "interval", translate("Heartbeat Interval (minutes)"))
+o = s:option(Value, "interval", "心跳间隔（分钟）")
 o.default = "30"
 o.datatype = "uinteger"
 

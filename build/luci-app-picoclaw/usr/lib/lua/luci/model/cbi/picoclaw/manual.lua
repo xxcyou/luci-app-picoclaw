@@ -8,15 +8,15 @@ local fs = require "nixio.fs"
 local uci = luci.model.uci.cursor()
 local m, s, o
 
-m = Map("picoclaw", "📝 手动设置",
-    "直接编辑 config.json 配置文件。保存后 PicoClaw 将自动重启。")
+m = Map("picoclaw", translate("PicoClaw Manual Settings"),
+    translate("Configure manual settings for PicoClaw AI Assistant."))
 
 -- Manual settings section
 s = m:section(NamedSection, "manual", "manual")
-s.title = "🔧 手动配置"
+s.title = translate("🔧 Manual Configuration")
 
-o = s:option(TextValue, "config_content", "配置内容")
-o.description = "使用高级 CodeMirror 编辑器直接修改 <code>config.json</code> 源文件。保存后服务将自动重启。"
+o = s:option(TextValue, "config_content", translate("Configuration Content"))
+o.description = translate("Edit the picoclaw configuration file directly.")
 o.rows = 20
 o.wrap = "off"
 

@@ -8,8 +8,8 @@ function index()
         return
     end
 
-    entry({"admin", "services", "picoclaw"}, firstchild(), _("PicoClaw"), 59).dependent = true
-    entry({"admin", "services", "picoclaw", "config"}, cbi("picoclaw/config"), _("Base Setting"), 10)
-    entry({"admin", "services", "picoclaw", "manual"}, cbi("picoclaw/manual"), _("Manual Settings"), 15)
-    entry({"admin", "services", "picoclaw", "log"}, cbi("picoclaw/log"), _("Log"), 20)
+    entry({"admin", "services", "picoclaw"}, firstchild(), "PicoClaw AI助手", 59).dependent = true
+    entry({"admin", "services", "picoclaw", "config"}, cbi("picoclaw/config"), "基本设置", 10)
+    entry({"admin", "services", "picoclaw", "manual"}, cbi("picoclaw/manual"), "手动设置", 15)
+    entry({"admin", "services", "picoclaw", "log"}, cbi("picoclaw/log"), "日志", 20)
 end

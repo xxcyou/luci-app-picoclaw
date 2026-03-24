@@ -31,7 +31,7 @@ end
 local is_running, pid = check_process()
 local version = get_version()
 
-local status_text = is_running and "运行中" or "未运行"
+local status_text = is_running and translate("RUNNING") or translate("NOT RUNNING")
 local color = is_running and "green" or "red"
 local icon = is_running and "✓" or "✗"
 local version_text = version ~= "" and "v" .. version or ""
@@ -39,13 +39,13 @@ local version_text = version ~= "" and "v" .. version or ""
 
 <div class="cbi-section">
     <p id="control_status" style="padding: 15px; border-radius: 8px; background: #f8f9fa; border: 1px solid #e9ecef; box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-size: 14px;">
-        <span style="color:<%=color%>"><%=icon%> <strong>PicoClaw AI助手 <%=version_text%> - <%=status_text%></strong></span>
+        <span style="color:<%=color%>"><%=icon%> <strong><%=translate("PicoClaw")%> <%=version_text%> - <%=status_text%></strong></span>
         <% if is_running and listen_port then %>
-            &nbsp;<a class="btn cbi-button" href="http://<%=luci.http.getenv("HTTP_HOST"):match("([^:]+)") or luci.sys.exec("ip route get 1.1.1.1 2>/dev/null | head -1 | awk '{print $7}'"):gsub("\n", "")%>:<%=listen_port%>/health" target="_blank">打开Web界面</a>
+            &nbsp;<a class="btn cbi-button" href="http://<%=luci.http.getenv("HTTP_HOST"):match("([^:]+)") or luci.sys.exec("ip route get 1.1.1.1 2>/dev/null | head -1 | awk '{print $7}'"):gsub("\n", "")%>:<%=listen_port%>/health" target="_blank"><%=translate("Open Web Interface")%></a>
         <% end %>
     </p>
     <div style="text-align: right; font-style: italic; margin-top: 10px; color: #6c757d; font-size: 12px;">
-        开源驱动：
+        <%=translate("Powered by open source: ")%>
         <a href="https://github.com/sipeed/picoclaw" target="_blank" style="text-decoration: none; color: #007bff;">
             PicoClaw UI by LIKE2000-ART
         </a>
